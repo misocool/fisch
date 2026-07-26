@@ -50,10 +50,15 @@ def check():
     data = request.get_json()
     email = data.get("email")
 
-    user_ip = request.remote_addr
+    user_ip = request.headers.get("X-Forwarded-For", request.remote_addr)
+
+    if user_ip:
+        user_ip = user_ip.split(",")[0].strip()
+
     if user_ip in ("127.0.0.1", "::1"):
         user_ip = None
-    geo_data = ipapi.location(ip=user_ip) if user_ip else ipapi.location()
+
+    geo_data = ipapi.location(ip=user_ip) if user_ip else None
 
     # xposed api crashes when there are no breaches and u try to get(), so need to wrap around try except
     breach_info = check_email(email)
