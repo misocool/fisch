@@ -62,62 +62,79 @@ def generate_phishing_example(profile):
     else:
         device_str = None
 
-    # Build body from conditional blocks
-    sentences = []
+    # --- Paragraph 1: Opening ---
+    paragraph_1 = f"We are reaching out regarding your {breach_name} account."
 
-    sentences.append(f"We are reaching out regarding your {breach_name} account.")
-
-    # Location + device sentence combined
+    # --- Paragraph 2: Location + device ---
     if city and city != "your area" and device_str:
-        sentences.append(
+        paragraph_2 = (
             f"Our systems detected access from {city} on {device_str} "
             f"that did not match your previous activity."
         )
     elif city and city != "your area":
-        sentences.append(
+        paragraph_2 = (
             f"Our systems detected access from {city} "
             f"that did not match your previous activity."
         )
     elif device_str:
-        sentences.append(
+        paragraph_2 = (
             f"Our systems detected access from {device_str} "
             f"that did not match your previous activity."
         )
     else:
-        sentences.append(
+        paragraph_2 = (
             "Our systems detected unusual access that did not match your previous activity."
         )
 
+    # --- Paragraph 3: Exposure details (grouped into one flowing paragraph) ---
+    exposure_sentences = []
+
     if profile["plaintext_breach"]:
         pname = profile["plaintext_breach"]["name"]
-        sentences.append(
-            f"Credentials from the {pname} breach have been identified as high risk — "
-            f"if you use the same password elsewhere, those accounts may also be at risk."
-        )
+        if pname == breach_name:
+            exposure_sentences.append(
+                f"Our records indicate your {breach_name} password was exposed in plaintext — "
+                f"if you reuse this password elsewhere, those accounts may also be at risk."
+            )
+        else:
+            exposure_sentences.append(
+                "Password data associated with your account was exposed and may be in circulation."
+            )
     elif profile["has_passwords"]:
-        sentences.append(
+        exposure_sentences.append(
             "Password data associated with your account was exposed and may be in circulation."
         )
 
     if profile["has_dob"]:
-        sentences.append(
+        exposure_sentences.append(
             "Personal identifiers including date of birth were also exposed, "
             "which may be used to bypass account recovery questions."
         )
 
     if profile["has_phone"]:
-        sentences.append(
+        exposure_sentences.append(
             "As your phone number was included in the exposed data, "
             "you may also receive SMS-based follow-up attempts."
         )
 
-    sentences.append(
+    if profile["breach_count"] > 1:
+        exposure_sentences.append(
+            f"This is not an isolated incident — your information has appeared "
+            f"across {profile['breach_count']} known breaches."
+        )
+
+    paragraph_3 = " ".join(exposure_sentences) if exposure_sentences else ""
+
+    # --- Paragraph 4: Call to action ---
+    paragraph_4 = (
         "Please verify your account details immediately to prevent further exposure: [link]"
     )
 
-    example_text = "\n\n".join(sentences)
+    # Join non-empty paragraphs
+    paragraphs = [p for p in [paragraph_1, paragraph_2, paragraph_3, paragraph_4] if p]
+    example_text = "\n\n".join(paragraphs)
 
-    # Pretext selection
+    # --- Pretext selection ---
     if profile["has_passwords"] and profile["plaintext_breach"]:
         pretext_type = "credential_alert"
         subject = f"Urgent: Your {breach_name} credentials may be compromised"
@@ -139,7 +156,7 @@ def generate_phishing_example(profile):
         subject = f"{breach_name} Security Notice"
         sender = f"{breach_name} Security (security@{sender_domain}.com)"
 
-    # Dynamic information_used
+    # --- Dynamic information_used ---
     information_used = [f"{breach_name} breach ({top['year']})"]
     if city and city != "your area":
         information_used.append(f"Location: {city}")
@@ -162,5 +179,5 @@ def generate_phishing_example(profile):
         "techniques": ["Authority impersonation", "Urgency", "Fear of account compromise"],
         "information_used": information_used,
         "note": f"Selected '{pretext_type}' — '{breach_name}' scored highest. "
-                f"Email assembled from {len(sentences)} conditional blocks."
+                f"Email assembled from {len(exposure_sentences) + 3} conditional blocks."
     }
