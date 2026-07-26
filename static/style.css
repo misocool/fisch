@@ -670,6 +670,8 @@ a{
     .metric-value{
 
         font-size:1.8rem;
+        word-break: break-word;
+        overflow-wrap: break-word;
 
     }
 
