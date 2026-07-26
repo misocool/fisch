@@ -117,17 +117,11 @@ def generate_phishing_example(profile):
             "you may also receive SMS-based follow-up attempts."
         )
 
-    if profile["breach_count"] > 1:
-        exposure_sentences.append(
-            f"This is not an isolated incident — your information has appeared "
-            f"across {profile['breach_count']} known breaches."
-        )
-
     paragraph_3 = " ".join(exposure_sentences) if exposure_sentences else ""
 
     # --- Paragraph 4: Call to action ---
     paragraph_4 = (
-        "Please verify your account details immediately to prevent further exposure: [link]"
+        "Please verify your account details immediately to prevent further exposure"
     )
 
     # Join non-empty paragraphs
