@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attack Simulation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+<nav>
+    <h2>Fisch</h2>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/results">Dashboard</a></li>
+        <li><a href="/attacker">Attack Simulation</a></li>
+        <li><a href="/fingerprint">Fingerprint</a></li>
+        <li><a href="/defence">Defence</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+    <p class="eyebrow">THREAT SIMULATION</p>
+    <h1>How An Attacker Could Target You</h1>
+    <p>
+        This educational simulation demonstrates how publicly
+        available information can be combined to create a
+        convincing phishing attempt.
+    </p>
+</section>
+
+<section class="section">
+
+    <h2>Attack Methodology</h2>
+
+    <div class="attack-step">
+        <strong>01 — Reconnaissance</strong>
+        <p>
+            Attackers first collect publicly available information,
+            including exposed emails and breach history.
+        </p>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="attack-step">
+        <strong>02 — Victim Profiling</strong>
+        <p id="profile"></p>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="attack-step">
+        <strong>03 — Attack Preparation</strong>
+        <p>
+            Information gathered from the victim profile is used
+            to create a believable scenario.
+        </p>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="attack-step">
+        <strong>04 — Phishing Delivery</strong>
+        <p>
+            The attacker sends a personalised message designed
+            to encourage the victim to take action.
+        </p>
+    </div>
+
+</section>
+
+<section class="section">
+
+    <h2>Target Profile Generated From Exposure</h2>
+
+    <div class="summary-box">
+        <p>
+            The following information represents the type of
+            intelligence an attacker may attempt to collect
+            before launching a targeted campaign.
+        </p>
+    </div>
+
+</section>
+
+<section class="section">
+
+    <h2>Simulated Phishing Email</h2>
+
+    <p>
+        This message is fictional and generated only to demonstrate
+        how attackers use personalisation techniques.
+    </p>
+
+    <div class="fake-email">
+
+        <div class="fake-email-header">
+            <p><strong>From:</strong> <span id="sender"></span></p>
+            <p><strong>Subject:</strong> <span id="subject"></span></p>
+        </div>
+
+        <div class="fake-email-body">
+            <p id="emailText"></p>
+            <button>Verify Account</button>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="section">
+
+    <h2>Why This Attack Could Work</h2>
+
+    <div class="recommendation high">
+        <h3>Personalisation Creates Trust</h3>
+        <p>
+            Attackers can use names, locations, services,
+            and previous breaches to make messages appear genuine.
+        </p>
+    </div>
+
+    <div class="recommendation medium">
+        <h3>Urgency Reduces Caution</h3>
+        <p>
+            Messages involving security warnings or account problems
+            encourage users to act quickly without verifying.
+        </p>
+    </div>
+
+    <div class="recommendation low">
+        <h3>Awareness Reduces Risk</h3>
+        <p>
+            Understanding these techniques makes suspicious messages
+            easier to identify and avoid.
+        </p>
+    </div>
+
+</section>
+
+</div>
+
+<script>
+
+const data = JSON.parse(sessionStorage.getItem("scanResults"));
+
+if (!data) {
+
+    window.location.href = "/";
+
+} else {
+
+    document.getElementById("sender").innerText =
+        data.phishing_example.sender;
+
+    document.getElementById("subject").innerText =
+        data.phishing_example.subject;
+
+    document.getElementById("emailText").innerText =
+        data.phishing_example.example;
+
+    let profileText = "";
+
+    profileText +=
+        "<strong>Browser:</strong> "
+        + data.device.browser
+        + "<br>";
+
+    profileText +=
+        "<strong>Platform:</strong> "
+        + data.device.platform
+        + "<br>";
+
+    profileText +=
+        "<strong>Location:</strong> "
+        + data.location.city
+        + "<br>";
+
+    profileText +=
+        "<strong>Timezone:</strong> "
+        + data.device.timezone;
+
+    document.getElementById("profile").innerHTML =
+        profileText;
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defence Centre</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+<nav>
+    <h2>Fisch</h2>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/results">Dashboard</a></li>
+        <li><a href="/attacker">Attack Simulation</a></li>
+        <li><a href="/fingerprint">Fingerprint</a></li>
+        <li><a href="/defence">Defence</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+    <p class="eyebrow">SECURITY RECOMMENDATIONS</p>
+    <h1>Defence Centre</h1>
+    <p>
+        Personalised actions based on your detected exposure
+        and the information an attacker could potentially use.
+    </p>
+</section>
+
+<section class="section report-header">
+
+    <div>
+        <h2>Security Posture</h2>
+        <p>
+            Your recommendations are generated from your
+            breach exposure and attacker profile.
+        </p>
+    </div>
+
+    <div class="status">
+        <span>Current Risk</span>
+        <strong id="risk"></strong>
+    </div>
+
+</section>
+
+<section class="dashboard-grid">
+
+    <div class="metric">
+        <div class="metric-title">Detected Issues</div>
+        <div class="metric-value" id="issueCount">-</div>
+    </div>
+
+    <div class="metric">
+        <div class="metric-title">Recommended Actions</div>
+        <div class="metric-value" id="actionCount">-</div>
+    </div>
+
+    <div class="metric">
+        <div class="metric-title">Protection Status</div>
+        <div class="metric-value">Improve</div>
+    </div>
+
+</section>
+
+<section class="section">
+
+    <h2>Recommended Actions</h2>
+
+    <p style="color:var(--muted); margin-bottom:25px;">
+        These recommendations are generated based on the
+        information exposed during your scan.
+    </p>
+
+    <div id="recommendations"></div>
+
+</section>
+
+<section class="section">
+
+    <h2>Security Checklist</h2>
+
+    <div class="grid">
+
+        <div class="card">
+            <h3>Account Security</h3>
+            <p>
+                ✓ Use unique passwords
+                <br><br>
+                ✓ Enable MFA
+                <br><br>
+                ✓ Review account recovery options
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Browser Safety</h3>
+            <p>
+                ✓ Keep browser updated
+                <br><br>
+                ✓ Remove unused extensions
+                <br><br>
+                ✓ Review permissions
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Phishing Awareness</h3>
+            <p>
+                ✓ Verify unexpected emails
+                <br><br>
+                ✓ Check sender addresses
+                <br><br>
+                ✓ Avoid urgent requests
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+</div>
+
+<script>
+
+const data = JSON.parse(sessionStorage.getItem("scanResults"));
+
+if (!data) {
+
+    window.location.href = "/";
+
+} else {
+
+    document.getElementById("risk").innerText =
+        data.breach_info.risk_label || "Unknown";
+
+    const issues = data.recommendations.filter(
+        rec => rec.type === "issue"
+    );
+
+    document.getElementById("issueCount").innerText =
+        issues.length;
+
+    document.getElementById("actionCount").innerText =
+        data.recommendations.length;
+
+    let recommendationHTML = "";
+
+    if (data.recommendations.length === 0) {
+
+        recommendationHTML = `
+        <div class="recommendation low">
+            <h3>No immediate issues detected</h3>
+            <p>
+                Continue following good security practices
+                and regularly monitor your exposure.
+            </p>
+        </div>
+        `;
+
+    } else {
+
+        data.recommendations.forEach(rec => {
+
+            recommendationHTML += `
+            <div class="recommendation ${rec.level}">
+                <h3>${rec.title}</h3>
+                <p>${rec.description}</p>
+            </div>
+            `;
+
+        });
+
+    }
+
+    document.getElementById("recommendations").innerHTML =
+        recommendationHTML;
+
+}
+
+</script>
+
+</body>
+</html>

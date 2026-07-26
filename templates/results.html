@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Exposure Report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <nav>
+        <h2>Fisch</h2>
+
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/results">Dashboard</a></li>
+            <li><a href="/attacker">Attack Simulation</a></li>
+            <li><a href="/fingerprint">Fingerprint</a></li>
+            <li><a href="/defence">Defence</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <p class="eyebrow">SECURITY REPORT</p>
+
+        <h1>Cyber Exposure Analysis</h1>
+
+        <p>
+            A summary of publicly available information,
+            device exposure, and potential attacker insights.
+        </p>
+    </section>
+
+    <section class="section report-header">
+        <div>
+            <h2>Exposure Overview</h2>
+
+            <p>
+                Your digital footprint has been analysed.
+                Review the findings below to understand your current risk.
+            </p>
+        </div>
+
+        <div class="status">
+            <span>Current Risk</span>
+            <strong id="riskScore"></strong>
+        </div>
+    </section>
+
+    <section class="dashboard-grid">
+
+        <div class="metric">
+            <div class="metric-title">Breaches Found</div>
+            <div id="breachCount" class="metric-value"></div>
+        </div>
+
+        <div class="metric">
+            <div class="metric-title">Browser</div>
+            <div id="browser" class="metric-value"></div>
+        </div>
+
+        <div class="metric">
+            <div class="metric-title">Location</div>
+            <div id="location" class="metric-value"></div>
+        </div>
+
+        <div class="metric">
+            <div class="metric-title">Exposure Type</div>
+            <div class="metric-value">Digital</div>
+        </div>
+
+    </section>
+
+    <section class="section">
+
+        <h2>Security Summary</h2>
+
+        <div class="summary-box">
+            <p>
+                This report demonstrates what information could
+                potentially be used by an attacker when creating
+                a targeted phishing campaign.
+            </p>
+
+            <ul>
+                <li>Public breach information may reveal personal data.</li>
+                <li>Browser metadata can expose device characteristics.</li>
+                <li>Combined information can increase phishing credibility.</li>
+            </ul>
+        </div>
+
+    </section>
+
+    <section class="section">
+        <h2>🗂 Exposure Details</h2>
+        <div id="breaches"></div>
+    </section>
+
+    <section class="section">
+
+        <h2>🖥 Device Intelligence</h2>
+
+        <div class="grid">
+
+            <div class="card">
+                <h3>Browser</h3>
+                <p id="deviceBrowser"></p>
+            </div>
+
+            <div class="card">
+                <h3>Platform</h3>
+                <p id="platform"></p>
+            </div>
+
+            <div class="card">
+                <h3>Screen Resolution</h3>
+                <p id="screen"></p>
+            </div>
+
+            <div class="card">
+                <h3>Timezone</h3>
+                <p id="timezone"></p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="section">
+
+        <h2>🎣 Attacker Perspective</h2>
+
+        <p>
+            The information discovered during this scan could help
+            an attacker create a more convincing social engineering attempt.
+        </p>
+
+        <br>
+
+        <a href="/attacker">
+            <button>View Attack Simulation →</button>
+        </a>
+
+    </section>
+
+</div>
+
+<script>
+
+const data = JSON.parse(sessionStorage.getItem("scanResults"));
+
+if (!data) {
+    window.location.href = "/";
+} else {
+
+    document.getElementById("riskScore").innerText =
+        data.breach_info.risk_label;
+
+    document.getElementById("breachCount").innerText =
+        data.breach_info.breach_count;
+
+    document.getElementById("browser").innerText =
+        data.device.browser.includes("Chrome")
+            ? "Chrome"
+            : data.device.browser;
+
+    document.getElementById("location").innerText =
+        data.location.city;
+
+    document.getElementById("deviceBrowser").innerText =
+        data.device.browser;
+
+    document.getElementById("platform").innerText =
+        data.device.platform;
+
+    document.getElementById("screen").innerText =
+        data.device.screen;
+
+    document.getElementById("timezone").innerText =
+        data.device.timezone;
+
+    let breachHTML = "";
+
+    if (data.breach_info.breaches.length === 0) {
+
+        breachHTML = `
+        <div class="recommendation low">
+            No known breaches were found.
+        </div>
+        `;
+
+    } else {
+
+        data.breach_info.breaches.forEach(b => {
+
+            breachHTML += `
+            <div class="card">
+
+                <h3>${b.name}</h3>
+
+                <p>Year exposed: ${b.year}</p>
+
+                <p class="metric-label">Exposed information</p>
+
+                ${b.exposed.map(item => `
+                    <span class="badge">${item}</span>
+                `).join("")}
+
+            </div>
+            `;
+
+        });
+
+    }
+
+    document.getElementById("breaches").innerHTML = breachHTML;
+
+}
+
+</script>
+
+</body>
+</html>

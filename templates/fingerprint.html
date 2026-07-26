@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser Fingerprint</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+<nav>
+    <h2>Fisch</h2>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/results">Dashboard</a></li>
+        <li><a href="/attacker">Attack Simulation</a></li>
+        <li><a href="/fingerprint">Fingerprint</a></li>
+        <li><a href="/defence">Defence</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+    <h1>Browser Fingerprint</h1>
+    <p>
+        A browser fingerprint is a collection of technical signals
+        that can reveal information about a device without requiring
+        access to personal files.
+    </p>
+</section>
+
+<section class="dashboard-grid">
+
+    <div class="metric">
+        <div class="metric-title">Browser</div>
+        <div class="metric-value" id="browser"></div>
+    </div>
+
+    <div class="metric">
+        <div class="metric-title">Operating System</div>
+        <div class="metric-value" id="platform"></div>
+    </div>
+
+    <div class="metric">
+        <div class="metric-title">Screen Resolution</div>
+        <div class="metric-value" id="screen"></div>
+    </div>
+
+    <div class="metric">
+        <div class="metric-title">Timezone</div>
+        <div class="metric-value" id="timezone"></div>
+    </div>
+
+</section>
+
+<section class="section">
+
+    <h2>What An Attacker Could Infer</h2>
+
+    <div class="card">
+        <h3>Device Profile</h3>
+        <p id="deviceInference"></p>
+    </div>
+
+    <div class="card">
+        <h3>Potential Tracking Information</h3>
+        <p>
+            A combination of browser version, timezone,
+            screen resolution and canvas fingerprint can create
+            a unique device signature.
+        </p>
+    </div>
+
+</section>
+
+<section class="section">
+
+    <h2>Collected Technical Information</h2>
+
+    <div class="card">
+        <h3>User Agent</h3>
+        <p id="userAgent"></p>
+    </div>
+
+    <div class="card">
+        <h3>Canvas Fingerprint</h3>
+        <p>Unique rendering signature collected from browser graphics.</p>
+        <p id="canvas"></p>
+    </div>
+
+</section>
+
+<section class="section">
+
+    <h2>Privacy Considerations</h2>
+
+    <div class="recommendation medium">
+        <strong>Browser fingerprints are not passwords</strong>
+        <p>
+            A fingerprint alone usually cannot directly access an account,
+            but it can help attackers identify and track devices.
+        </p>
+    </div>
+
+    <div class="recommendation low">
+        <strong>Reduce unnecessary exposure</strong>
+        <p>
+            Keep browsers updated, review permissions,
+            and avoid installing unknown extensions.
+        </p>
+    </div>
+
+</section>
+
+</div>
+
+<script>
+
+const data = JSON.parse(sessionStorage.getItem("scanResults"));
+
+if (!data) {
+
+    window.location.href = "/";
+
+} else {
+
+    const device = data.device;
+
+    document.getElementById("browser").innerText = extractBrowser(device.browser);
+    document.getElementById("platform").innerText = device.platform || "Unknown";
+    document.getElementById("screen").innerText = device.screen || "Unknown";
+    document.getElementById("timezone").innerText = device.timezone || "Unknown";
+    document.getElementById("userAgent").innerText = device.browser;
+
+    let inference = "";
+    const browser = device.browser.toLowerCase();
+
+    if (browser.includes("chrome")) {
+        inference += "• Chrome-based browser detected<br>";
+    }
+
+    if (browser.includes("mobile")) {
+        inference += "• Mobile device likely<br>";
+    } else {
+        inference += "• Desktop device likely<br>";
+    }
+
+    if (device.platform) {
+        inference += "• Platform information exposed: " + device.platform + "<br>";
+    }
+
+    inference += "• Approximate region may be inferred from timezone";
+
+    document.getElementById("deviceInference").innerHTML = inference;
+
+}
+
+function extractBrowser(agent) {
+
+    if (agent.includes("Chrome")) return "Chrome";
+    if (agent.includes("Firefox")) return "Firefox";
+    if (agent.includes("Safari")) return "Safari";
+
+    return "Unknown";
+
+}
+
+</script>
+
+</body>
+</html>

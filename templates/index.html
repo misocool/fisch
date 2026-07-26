@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fisch | Cyber Exposure Scanner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+<nav>
+    <h2>Fisch</h2>
+    <ul>
+        <li><a href="/">Home</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+
+    <h1>Understand Your Digital Exposure</h1>
+
+    <p>
+        Discover what information is publicly available about you,
+        what your browser reveals, and how an attacker could use that
+        information to craft a convincing phishing attack.
+    </p>
+
+    <div class="section" style="max-width:720px; margin:45px auto 0;">
+
+        <h2 style="margin-bottom:12px;">Start a Security Scan</h2>
+
+        <p style="margin-bottom:28px; color:var(--muted);">
+            Enter your email address to generate your personalised cyber exposure report.
+        </p>
+
+        <div class="search-box">
+            <input type="email" id="emailInput" placeholder="Enter your email address">
+            <button onclick="startScan()">Analyse Exposure →</button>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="section">
+
+    <h2>What You'll Discover</h2>
+
+    <div class="grid">
+
+        <div class="card">
+            <div class="card-icon">🗂️</div>
+            <h3>Data Breach Exposure</h3>
+            <p>
+                Check whether your email address has appeared in known public
+                data breaches and review the information that may have been exposed.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🖥️</div>
+            <h3>Browser Fingerprint</h3>
+            <p>
+                Learn what your browser automatically reveals including
+                your operating system, browser version, screen resolution
+                and timezone.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🎯</div>
+            <h3>Attacker Simulation</h3>
+            <p>
+                See how publicly available information can be combined to
+                produce a realistic, personalised phishing email.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🛡️</div>
+            <h3>Security Recommendations</h3>
+            <p>
+                Receive practical actions that can reduce your exposure
+                and improve your resilience against phishing attacks.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="section">
+
+    <h2>How the Analysis Works</h2>
+
+    <div class="attack-step">
+        <strong>1. Browser Analysis</strong>
+        <p>
+            Technical information shared by your browser is collected to
+            understand what is publicly visible to websites.
+        </p>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="attack-step">
+        <strong>2. Breach Intelligence</strong>
+        <p>
+            Your email address is compared against publicly available
+            breach records to identify previously exposed information.
+        </p>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="attack-step">
+        <strong>3. Attacker Profiling</strong>
+        <p>
+            The collected information is analysed from an attacker's
+            perspective to demonstrate what they could learn.
+        </p>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="attack-step">
+        <strong>4. Security Report</strong>
+        <p>
+            A complete exposure report is generated, including a phishing
+            simulation and personalised recommendations.
+        </p>
+    </div>
+
+</section>
+
+</div>
+
+<script src="{{ url_for('static', filename='fingerprint.js') }}"></script>
+
+<script>
+
+function startScan() {
+
+    const email = document.getElementById("emailInput").value;
+
+    if (email.trim() === "") {
+        alert("Please enter an email address.");
+        return;
+    }
+
+    fetch("/check", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            email: email
+        })
+    })
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        sessionStorage.setItem(
+            "scanResults",
+            JSON.stringify(data)
+        );
+
+        window.location.href = "/results";
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
