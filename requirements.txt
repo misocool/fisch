@@ -4,3 +4,4 @@ xposedornot==1.1.0
 requests==2.32.5
 cryptography==49.0.0
 pycryptodome==3.23.0
+gunicorn
