@@ -540,6 +540,8 @@ nav a:hover{
 .fake-email-body p{
 
     color:#222;
+    white-space: pre-line;
+    line-height: 1.8;
 
 }
 

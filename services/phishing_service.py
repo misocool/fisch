@@ -115,7 +115,7 @@ def generate_phishing_example(profile):
         "Please verify your account details immediately to prevent further exposure: [link]"
     )
 
-    example_text = " ".join(sentences)
+    example_text = "\n\n".join(sentences)
 
     # Pretext selection
     if profile["has_passwords"] and profile["plaintext_breach"]:
