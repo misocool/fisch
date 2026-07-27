@@ -67,11 +67,6 @@
             <div id="location" class="metric-value"></div>
         </div>
 
-        <div class="metric">
-            <div class="metric-title">Exposure Type</div>
-            <div class="metric-value">Digital</div>
-        </div>
-
     </section>
 
     <section class="section">
@@ -95,13 +90,13 @@
     </section>
 
     <section class="section">
-        <h2>🗂 Exposure Details</h2>
+        <h2>Exposure Details</h2>
         <div id="breaches"></div>
     </section>
 
     <section class="section">
 
-        <h2>🖥 Device Intelligence</h2>
+        <h2>Device Intelligence</h2>
 
         <div class="grid">
 
@@ -131,18 +126,32 @@
 
     <section class="section">
 
-        <h2>🎣 Attacker Perspective</h2>
+        <h2>Attacker Perspective</h2>
 
-        <p>
-            The information discovered during this scan could help
-            an attacker create a more convincing social engineering attempt.
-        </p>
+        <div class="attack-step">
+            <strong>What could an attacker do with this?</strong>
+            <p>
+                Based on your breach exposure, device fingerprint and location,
+                a personalised phishing email has been generated demonstrating
+                how an attacker could use this information to target you.
+            </p>
+        </div>
 
-        <br>
+        <div style="margin-top: 20px; display: flex; gap: 16px; flex-wrap: wrap;">
 
-        <a href="/attacker">
-            <button>View Attack Simulation →</button>
-        </a>
+            <a href="/attacker">
+                <button style="background: var(--red); padding: 14px 28px; border-radius: 10px; font-size: 1rem; font-weight: 600;">
+                    View Attack Simulation →
+                </button>
+            </a>
+
+            <a href="/defence">
+                <button style="background: var(--green); padding: 14px 28px; border-radius: 10px; font-size: 1rem; font-weight: 600;">
+                    View Defence Recommendations →
+                </button>
+            </a>
+
+        </div>
 
     </section>
 

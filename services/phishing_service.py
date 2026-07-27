@@ -62,10 +62,10 @@ def generate_phishing_example(profile):
     else:
         device_str = None
 
-    # --- Paragraph 1: Opening ---
+    # Opening
     paragraph_1 = f"We are reaching out regarding your {breach_name} account."
 
-    # --- Paragraph 2: Location + device ---
+    # Location + device
     if city and city != "your area" and device_str:
         paragraph_2 = (
             f"Our systems detected access from {city} on {device_str} "
@@ -86,14 +86,14 @@ def generate_phishing_example(profile):
             "Our systems detected unusual access that did not match your previous activity."
         )
 
-    # --- Paragraph 3: Exposure details (grouped into one flowing paragraph) ---
+    # Exposure details
     exposure_sentences = []
 
     if profile["plaintext_breach"]:
         pname = profile["plaintext_breach"]["name"]
         if pname == breach_name:
             exposure_sentences.append(
-                f"Our records indicate your {breach_name} password was exposed in plaintext — "
+                f"Our records indicate your {breach_name} password was exposed in plaintext. "
                 f"if you reuse this password elsewhere, those accounts may also be at risk."
             )
         else:
@@ -119,7 +119,7 @@ def generate_phishing_example(profile):
 
     paragraph_3 = " ".join(exposure_sentences) if exposure_sentences else ""
 
-    # --- Paragraph 4: Call to action ---
+    # Call to action
     paragraph_4 = (
         "Please verify your account details immediately to prevent further exposure"
     )
@@ -128,7 +128,7 @@ def generate_phishing_example(profile):
     paragraphs = [p for p in [paragraph_1, paragraph_2, paragraph_3, paragraph_4] if p]
     example_text = "\n\n".join(paragraphs)
 
-    # --- Pretext selection ---
+    # Pretext
     if profile["has_passwords"] and profile["plaintext_breach"]:
         pretext_type = "credential_alert"
         subject = f"Urgent: Your {breach_name} credentials may be compromised"
@@ -150,7 +150,7 @@ def generate_phishing_example(profile):
         subject = f"{breach_name} Security Notice"
         sender = f"{breach_name} Security (security@{sender_domain}.com)"
 
-    # --- Dynamic information_used ---
+    # Dynamic info
     information_used = [f"{breach_name} breach ({top['year']})"]
     if city and city != "your area":
         information_used.append(f"Location: {city}")

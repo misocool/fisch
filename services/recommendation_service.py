@@ -40,7 +40,7 @@ def generate_recommendations(profile):
             "level": "high",
             "type": "issue",
             "title": f"Your email appeared in {breach_count} separate breaches",
-            "description": f"Appearing in {breach_count} breaches (including {service_list}) significantly increases your risk profile. Each breach adds another piece of information an attacker can use — combining data across breaches allows for highly personalised attacks even when individual exposures seem minor. Enable multi-factor authentication on all important accounts immediately."
+            "description": f"Appearing in {breach_count} breaches (including {service_list}) significantly increases your risk profile. Each breach adds another piece of information an attacker can use by combining data across breaches allows for highly personalised attacks even when individual exposures seem minor. Enable multi-factor authentication on all important accounts immediately."
         })
 
     elif breach_count > 0:
@@ -57,7 +57,7 @@ def generate_recommendations(profile):
             "level": "medium",
             "type": "issue",
             "title": "Your phone number was exposed — watch for SMS phishing",
-            "description": "Your phone number appeared in at least one breach. Attackers use exposed phone numbers to send convincing SMS phishing messagesthat impersonate banks, delivery services, or government agencies. Be skeptical of any unexpected text message asking you to click a link or provide information, even if it appears to know personal details about you."
+            "description": "Your phone number appeared in at least one breach. Attackers use exposed phone numbers to send convincing SMS phishing messages that impersonate banks, delivery services, or government agencies. Be skeptical of any unexpected text message asking you to click a link or provide information, even if it appears to know personal details about you."
         })
 
     # Date of birth exposure
@@ -66,7 +66,7 @@ def generate_recommendations(profile):
             "level": "medium",
             "type": "issue",
             "title": "Your date of birth was exposed — account recovery is at risk",
-            "description": "Your date of birth was found in a breach. This information is commonly used as a verification factor for account recovery — meaning an attacker who knows your date of birth may be able to reset passwords or bypass identity checks on financial and government accounts. Review the security questions and recovery options on your most important accounts."
+            "description": "Your date of birth was found in a breach. This information is commonly used as a verification factor for account recovery. An attacker who knows your date of birth may be able to reset passwords or bypass identity checks on financial and government accounts. Review the security questions and recovery options on your most important accounts."
         })
 
     # Social media exposure
