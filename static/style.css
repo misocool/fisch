@@ -474,7 +474,7 @@ nav a:hover{
     padding:20px;
 
     border-radius:10px;
-    
+
     margin:15px 0;
 }
 
@@ -591,18 +591,18 @@ nav a:hover{
 }
 
 .high{
-    background:var(--card);
-    border:1px solid var(--border);
+    background:rgba(248,81,73,.10);
+    border-radius:10px;
 }
 
 .medium{
-    background:var(--card);
-    border:1px solid var(--border);
+    background:rgba(210,153,34,.10);
+    border-radius:10px;
 }
 
 .low{
-    background:var(--card);
-    border:1px solid var(--border);
+    background:rgba(63,185,80,.10);
+    border-radius:10px;
 }
 
 
