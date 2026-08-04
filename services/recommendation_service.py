@@ -56,7 +56,7 @@ def generate_recommendations(profile):
         recommendations.append({
             "level": "medium",
             "type": "issue",
-            "title": "Your phone number was exposed — watch for SMS phishing",
+            "title": "Your phone number was exposed - watch out for SMS phishing",
             "description": "Your phone number appeared in at least one breach. Attackers use exposed phone numbers to send convincing SMS phishing messages that impersonate banks, delivery services, or government agencies. Be skeptical of any unexpected text message asking you to click a link or provide information, even if it appears to know personal details about you."
         })
 
@@ -65,7 +65,7 @@ def generate_recommendations(profile):
         recommendations.append({
             "level": "medium",
             "type": "issue",
-            "title": "Your date of birth was exposed — account recovery is at risk",
+            "title": "Your date of birth was exposed - account recovery is at risk",
             "description": "Your date of birth was found in a breach. This information is commonly used as a verification factor for account recovery. An attacker who knows your date of birth may be able to reset passwords or bypass identity checks on financial and government accounts. Review the security questions and recovery options on your most important accounts."
         })
 
